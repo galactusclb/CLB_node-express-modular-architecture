@@ -1,6 +1,6 @@
-import express, { Request, Response, Router } from 'express';
+import express, { Router } from 'express';
 
-import productRouter from "features/products/product.routes"
+import productRouter from "modules/products/product.routes"
 
 const router: Router = express.Router();
 
