@@ -5,7 +5,7 @@ import "dotenv/config";
 import 'express-async-errors';
 
 import routes from "features/main.routes"
-import { badJsonHandler, errorHandler, notFoundHandler } from "utils/middlewares";
+import { badJsonHandler, errorHandler, notFoundHandler } from "middlewares";
 
 
 const app: Application = express()

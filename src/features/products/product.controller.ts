@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 
 import { fetchAllProducts, fetchProductById } from "./product.service"
-import { Controller } from "utils/middlewares/make-express-callback.middleware";
+import { Controller } from "middlewares/make-express-callback.middleware";
 
 export const getAllProducts: Controller = async () => {
     const results = await fetchAllProducts()

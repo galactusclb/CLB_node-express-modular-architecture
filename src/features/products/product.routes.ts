@@ -1,7 +1,7 @@
 import express, { Router } from "express"
 
 import { getAllProducts, getProductById } from "./product.controller"
-import { makeExpressCallback } from "utils/middlewares"
+import { makeExpressCallback } from "middlewares"
 
 const route: Router = express.Router()
 

@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction, ErrorRequestHandler } from "express";
 
-import { APIError, BadRequestError, NotFoundError } from "../api-errors";
+import { APIError, BadRequestError, NotFoundError } from "../utils/api-errors";
 import mongoose from "mongoose";
 
 const errorHandler = async (error: APIError, req: Request, res: Response, next: NextFunction) => {

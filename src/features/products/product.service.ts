@@ -3,11 +3,6 @@ import { ProductModel } from "./product.model";
 
 export const fetchAllProducts = async () => {
     const results = await ProductModel.find()
-
-    if (!results?.length) {
-        throw new NotFoundError('Products not found');
-    }
-
     return results;
 }
 
@@ -19,7 +14,7 @@ export const fetchProductById = async (productId: string) => {
     const hasProduct = await ProductModel.findById(productId)
 
     if (!hasProduct) {
-        throw new NotFoundError('Products not found');
+        throw new NotFoundError('Product not found');
     }
 
     return hasProduct;
