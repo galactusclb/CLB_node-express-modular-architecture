@@ -3,6 +3,10 @@ import { RefreshToken } from "../types/refresh-token.type";
 
 const refreshTokenSchema = new Schema({
     owner: { type: Schema.Types.ObjectId, ref: "User" }
-})
+},
+    {
+        timestamps: true,
+    }
+)
 
 export const RefreshTokenModel = model<RefreshToken>("RefreshToken", refreshTokenSchema)
