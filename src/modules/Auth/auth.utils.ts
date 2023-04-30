@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
-import jwt from "jsonwebtoken";
+import jwt, { TokenExpiredError } from "jsonwebtoken";
 import * as bcrypt from 'bcrypt';
 
 import { constants } from "utils/constants";
 import { User } from "./types/user.type";
-import { InternalServerError } from "utils/api-errors";
+import { InternalServerError, UnauthorizedError } from "utils/api-errors";
 
 // export const withTransaction = (fn: (req: Request, res: Response, session: any) => Promise<any>) => {
 export const withTransaction = <T>(fn: (...args: any[]) => Promise<T>): ((...args: any[]) => Promise<T | undefined>) => {
@@ -52,10 +52,28 @@ export const createRefreshToken = (userId: mongoose.Types.ObjectId, refreshToken
         },
         constants.JWT_REFRESH_TOKEN_SECRET!,
         {
-            expiresIn: '30d'
+            expiresIn: '1m'
         }
     )
 }
+
+export const validateRefreshToken = (refreshToken: string): any => {
+    try {
+        return jwt.verify(refreshToken, constants.JWT_REFRESH_TOKEN_SECRET!)
+    } catch (error) {
+        if (error instanceof TokenExpiredError) {
+            const decodedToken = jwt.decode(refreshToken);
+
+            return {
+                decodedToken,
+                error
+            }
+        }
+
+        throw new InternalServerError()
+    }
+}
+
 
 export const generateHashPassword = async (password: string): Promise<string> => {
     const saltRounds = 10;

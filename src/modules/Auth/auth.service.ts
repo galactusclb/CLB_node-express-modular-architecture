@@ -1,5 +1,5 @@
 
-import { AccessDeniedError, ForbiddenError, NotFoundError } from "utils/api-errors"
+import { AccessDeniedError, ForbiddenError, NotFoundError, UnauthorizedError } from "utils/api-errors"
 import { UserModel } from "./models/user.model"
 import { RefreshTokenModel } from "./models"
 import { excludeProperties, generateHashPassword, verifyHashPassword, withTransaction } from "./auth.utils"
@@ -67,3 +67,36 @@ export const doLogin = withTransaction(async (userName: string, password: string
         refreshTokenDoc
     }
 })
+
+export const doCreateNewRefreshToken = withTransaction(async (userId: string, currentRefreshTokenID: string, session): Promise<RefreshToken> => {
+
+    const tokenExists = await RefreshTokenModel.exists({ _id: currentRefreshTokenID })
+
+    if (!tokenExists) {
+        throw new UnauthorizedError("Unauthorized token 2")
+    }
+
+    const refreshTokenDoc = new RefreshTokenModel({
+        owner: userId
+    })
+
+    await refreshTokenDoc.save({ session })
+
+    const gg = await RefreshTokenModel.deleteOne({ _id: currentRefreshTokenID }, { session })
+    console.log(gg);
+
+    return refreshTokenDoc
+})
+
+export const doDeleteRefreshToken = async (refreshTokenID: string) => {
+
+    const deletedRes = await RefreshTokenModel.deleteOne({ _id: refreshTokenID })
+
+    console.log(deletedRes);
+
+    if (deletedRes?.deletedCount) {
+        console.log("A refresh token has been deleted.");
+    }
+
+    return true
+}
