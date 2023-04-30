@@ -1,5 +1,6 @@
 import express, { Router } from 'express';
 
+import authRouter from "modules/Auth/auth.routes"
 import productRouter from "modules/products/product.routes"
 
 const router: Router = express.Router();
@@ -12,9 +13,13 @@ const routes:
         route: Router
     }[] = [
         {
+            path: '/auth',
+            route: authRouter
+        },
+        {
             path: '/product',
             route: productRouter
-        }
+        },
     ]
 
 routes?.forEach((route) => {

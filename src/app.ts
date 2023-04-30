@@ -4,7 +4,7 @@ import "dotenv/config";
 
 import 'express-async-errors';
 
-import routes from "features/main.routes"
+import routes from "modules/main.routes"
 import { badJsonHandler, errorHandler, notFoundHandler } from "middlewares";
 
 
