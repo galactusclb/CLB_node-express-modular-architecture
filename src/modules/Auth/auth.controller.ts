@@ -1,6 +1,6 @@
 
 import { Controller } from "middlewares/make-express-callback.middleware";
-import { doCreateNewRefreshToken, doDeleteRefreshToken, doLogin, doSignup } from "./auth.service";
+import { doCreateNewRefreshToken, doDeleteAllRefreshToken, doDeleteRefreshToken, doLogin, doSignup } from "./auth.service";
 import { InternalServerError, UnauthorizedError } from "utils/api-errors";
 import { createAccessToken, createRefreshToken, validateRefreshToken } from "./auth.utils";
 
@@ -48,6 +48,40 @@ export const login: Controller = async (httpRequest) => {
     }
 }
 
+export const logout: Controller = async (httpRequest) => {
+
+    const { refreshToken } = httpRequest.body
+
+    const decodedRefreshToken = await validateRefreshToken(refreshToken)
+
+    await doDeleteRefreshToken(decodedRefreshToken?.tokenId);
+
+    return {
+        statusCode: 201,
+        body: {
+            status: true,
+            message: "Successfully logout"
+        }
+    }
+}
+
+export const logoutAll: Controller = async (httpRequest) => {
+
+    const { refreshToken } = httpRequest.body
+
+    const decodedRefreshToken = await validateRefreshToken(refreshToken)
+
+    await doDeleteAllRefreshToken(decodedRefreshToken?.userId);
+
+    return {
+        statusCode: 201,
+        body: {
+            status: true,
+            message: "Successfully logout from all devices"
+        }
+    }
+}
+
 export const newRefreshToken: Controller = async (httpRequest) => {
 
     const { refreshToken } = httpRequest.body
@@ -84,4 +118,29 @@ export const newRefreshToken: Controller = async (httpRequest) => {
         }
     }
 
+}
+
+export const newAccessToken: Controller = async (httpRequest) => {
+
+    const { refreshToken } = httpRequest.body
+
+    const decodedRefreshToken = await validateRefreshToken(refreshToken)
+
+    if (decodedRefreshToken?.error) {
+
+        await doDeleteRefreshToken(decodedRefreshToken?.decodedToken?.tokenId);
+
+        throw new UnauthorizedError("Unauthorized token acce");
+    }
+
+    const newAccessToken = createAccessToken(decodedRefreshToken.userId)
+
+    return {
+        statusCode: 200,
+        body: {
+            id: decodedRefreshToken.userId,
+            refreshToken,
+            accessToken: newAccessToken
+        }
+    }
 }

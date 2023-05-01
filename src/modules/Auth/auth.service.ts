@@ -100,3 +100,16 @@ export const doDeleteRefreshToken = async (refreshTokenID: string) => {
 
     return true
 }
+
+export const doDeleteAllRefreshToken = async (userID: string) => {
+
+    const deletedRes = await RefreshTokenModel.deleteMany({ owner: userID })
+
+    console.log(deletedRes);
+
+    if (deletedRes?.deletedCount) {
+        console.log("A refresh token has been deleted.");
+    }
+
+    return true
+}

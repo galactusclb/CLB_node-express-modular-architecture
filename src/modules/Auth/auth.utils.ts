@@ -52,7 +52,7 @@ export const createRefreshToken = (userId: mongoose.Types.ObjectId, refreshToken
         },
         constants.JWT_REFRESH_TOKEN_SECRET!,
         {
-            expiresIn: '1m'
+            expiresIn: '30d'
         }
     )
 }
@@ -70,7 +70,7 @@ export const validateRefreshToken = (refreshToken: string): any => {
             }
         }
 
-        throw new InternalServerError()
+        throw new UnauthorizedError("Unauthorized token")
     }
 }
 
