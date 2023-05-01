@@ -38,7 +38,7 @@ export const createAccessToken = (userId: mongoose.Types.ObjectId) => {
         },
         constants.JWT_ACCESS_TOKEN_SECRET!,
         {
-            expiresIn: '10m'
+            expiresIn: constants.ACCESS_TOKEN_EXPIRES_IN || '10m'
         }
     )
 }
@@ -52,7 +52,7 @@ export const createRefreshToken = (userId: mongoose.Types.ObjectId, refreshToken
         },
         constants.JWT_REFRESH_TOKEN_SECRET!,
         {
-            expiresIn: '30d'
+            expiresIn: constants.REFRESH_TOKEN_EXPIRES_IN || "30d"
         }
     )
 }
