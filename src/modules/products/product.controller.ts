@@ -1,4 +1,4 @@
-import { doCreateProduct, fetchAllProducts, fetchProductById } from "./product.service"
+import { doCreateProduct, doDeleteProduct, fetchAllProducts, fetchProductById } from "./product.service"
 import { Controller } from "middlewares/make-express-callback.middleware";
 import { getAuthIdFromHeader } from "@utils/auth-helpers";
 
@@ -41,6 +41,22 @@ export const createProduct: Controller = async (httpRequest) => {
     return {
         statusCode: 200,
         body: {
+            data: results
+        }
+    };
+}
+
+export const deleteProduct: Controller = async (httpRequest) => {
+
+    const { id } = httpRequest.params
+
+    const results = await doDeleteProduct(id)
+
+    return {
+        statusCode: 200,
+        body: {
+            status: true,
+            message: "The selected item has been deleted",
             data: results
         }
     };

@@ -2,6 +2,7 @@ import { ConflictError, NotFoundError } from "utils/api-errors";
 import { ProductModel } from "./product.model";
 import { Product } from "./product.interface";
 
+
 export const doCreateProduct = async (payload: Product): Promise<Product> => {
     const hasProduct = await ProductModel.findOne({ name: payload?.name })
 
@@ -31,4 +32,15 @@ export const fetchProductById = async (productId: string) => {
     }
 
     return hasProduct;
+}
+
+export const doDeleteProduct = async (productId: string) => {
+
+    const deletedDoc = await ProductModel.findByIdAndDelete(productId,)
+
+    if (!deletedDoc) {
+        throw new NotFoundError('Product not found');
+    }
+
+    return deletedDoc;
 }
