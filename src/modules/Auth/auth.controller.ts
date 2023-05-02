@@ -27,9 +27,12 @@ export const signUp: Controller = async (httpRequest) => {
     return {
         statusCode: 201,
         body: {
-            userDoc: signupResult?.userDoc,
-            refreshToken,
-            accessToken
+            success: true,
+            data: {
+                userDoc: signupResult?.userDoc,
+                refreshToken,
+                accessToken
+            }
         }
     }
 }
@@ -60,9 +63,12 @@ export const login: Controller = async (httpRequest) => {
     return {
         statusCode: 201,
         body: {
-            userDoc: loginData?.userDoc,
-            refreshToken,
-            accessToken
+            success: true,
+            data: {
+                userDoc: loginData?.userDoc,
+                refreshToken,
+                accessToken
+            }
         }
     }
 }
@@ -78,7 +84,7 @@ export const logout: Controller = async (httpRequest) => {
     return {
         statusCode: 201,
         body: {
-            status: true,
+            success: true,
             message: "Successfully logout"
         }
     }
@@ -95,7 +101,7 @@ export const logoutAll: Controller = async (httpRequest) => {
     return {
         statusCode: 201,
         body: {
-            status: true,
+            success: true,
             message: "Successfully logout from all devices"
         }
     }
@@ -138,9 +144,12 @@ export const newRefreshToken: Controller = async (httpRequest) => {
     return {
         statusCode: 200,
         body: {
-            id: decodedRefreshToken.userId,
-            refreshToken: newRefreshToken,
-            accessToken: newAccessToken
+            success: true,
+            data: {
+                id: decodedRefreshToken.userId,
+                refreshToken: newRefreshToken,
+                accessToken: newAccessToken
+            }
         }
     }
 
@@ -164,9 +173,12 @@ export const newAccessToken: Controller = async (httpRequest) => {
     return {
         statusCode: 200,
         body: {
-            id: decodedRefreshToken.userId,
-            refreshToken,
-            accessToken: newAccessToken
+            success: true,
+            data: {
+                id: decodedRefreshToken.userId,
+                refreshToken,
+                accessToken: newAccessToken
+            }
         }
     }
 }

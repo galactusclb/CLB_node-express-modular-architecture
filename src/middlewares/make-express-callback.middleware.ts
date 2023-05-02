@@ -18,7 +18,11 @@ export type HttpRequest = {
 export type Controller = (httpRequest: HttpRequest, httpResponse: any) => Promise<{
     headers?: { [key: string]: string };
     statusCode: number;
-    body: any;
+    body: {
+        success: boolean,
+        message?: string,
+        data?: any
+    };
 }>;
 
 const makeExpressCallback = (controller: Controller) => async (

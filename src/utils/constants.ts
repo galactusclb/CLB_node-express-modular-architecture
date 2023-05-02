@@ -13,4 +13,10 @@ export const constants = {
         MODERATOR: "moderator",
         USER: "user",
     },
+    API_RESPONSE_MESSAGES: {
+        create: "New __ added successfully",
+        retrieve: "__ retrieved successfully",
+        update: "__ updated successfully.",
+        delete: "__ delete successfully.",
+    }
 };

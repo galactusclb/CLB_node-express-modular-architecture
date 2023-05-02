@@ -17,7 +17,7 @@ const routes:
             route: authRouter
         },
         {
-            path: '/product',
+            path: '/products',
             route: productRouter
         },
     ]
