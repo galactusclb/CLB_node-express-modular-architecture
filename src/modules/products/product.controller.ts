@@ -1,5 +1,3 @@
-import { Request, Response } from "express";
-
 import { fetchAllProducts, fetchProductById } from "./product.service"
 import { Controller } from "middlewares/make-express-callback.middleware";
 import { getAuthIdFromHeader } from "@utils/auth-helpers";

@@ -1,7 +1,7 @@
 import { Request, Response, RequestHandler, NextFunction } from 'express';
 
 import { UnauthorizedError } from 'utils/api-errors';
-import { verifyJWT } from 'modules/Auth/jwt.service';
+import { verifyJWT } from '@utils/jwt-helper';
 import { getAuthIdFromHeader } from '@utils/auth-helpers';
 import { AuthToken } from 'types/auth-toke.model';
 
