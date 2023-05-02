@@ -9,8 +9,14 @@ const UserSchema = new mongoose.Schema({
     isActive: { type: Boolean, required: false }
 }, {
     timestamps: true,
-    toObject: { transform: function (doc, ret) { delete ret.password; } },
-    toJSON: { transform: function (doc, ret) { delete ret.password; } }
+    // versionKey: false,
+    toObject: { transform: function (doc, ret) { delete ret.password; delete ret.__v; } },
+    toJSON: { transform: function (doc, ret) { delete ret.password; delete ret.__v; } }
 })
+
+// UserSchema.path('__v', {
+//     type: Number,
+//     select: false
+// });
 
 export const UserModel = mongoose.model<User>('User', UserSchema)

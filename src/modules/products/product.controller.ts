@@ -65,6 +65,7 @@ export const updateProduct: Controller = async (httpRequest) => {
         statusCode: 200,
         body: {
             success: true,
+            message: ApiResponseMessage("update", "product"),
             data: results
         }
     };

@@ -9,7 +9,14 @@ const ProductSchema = new mongoose.Schema({
     description: { type: String },
     sku: { type: Number, default: 0 },
 }, {
-    timestamps: true
+    timestamps: true,
+    toJSON: { transform: function (doc, ret) { delete ret.__v; } },
+    toObject: { transform: function (doc, ret) { delete ret.__v; } },
 });
+
+// ProductSchema.path('__v', {
+//     type: Number,
+//     select: false
+// });
 
 export const ProductModel = mongoose.model<Product>('Product', ProductSchema);

@@ -11,6 +11,6 @@ route.get("/", makeExpressCallback(getAllProducts))
 route.post("/", AuthGuard, RoleGuard(constants.AUTH_ROLES.ADMIN), makeExpressCallback(createProduct))
 route.get("/:id", AuthGuard, makeExpressCallback(getProductById))
 route.put("/:id", AuthGuard, RoleGuard(constants.AUTH_ROLES.ADMIN), makeExpressCallback(updateProduct))
-route.delete("/:id", makeExpressCallback(deleteProduct))
+route.delete("/:id", AuthGuard, RoleGuard(constants.AUTH_ROLES.ADMIN), makeExpressCallback(deleteProduct))
 
 export default route

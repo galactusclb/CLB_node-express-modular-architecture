@@ -35,13 +35,15 @@ export const fetchProductById = async (productId: string) => {
 }
 
 export const doUpdateProduct = async (productId: string, payload: Product): Promise<Product> => {
-    const hasProduct = await ProductModel.findById(productId)
 
-    if (!hasProduct) {
+    const filter = { _id: productId };
+    const options = { new: true };
+
+    const productDoc = await ProductModel.findByIdAndUpdate(filter, payload, options)
+
+    if (!productDoc) {
         throw new NotFoundError("Product not found")
     }
-
-    const productDoc = ProductModel.create(payload)
 
     return productDoc
 }

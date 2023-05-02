@@ -6,7 +6,14 @@ const refreshTokenSchema = new Schema({
 },
     {
         timestamps: true,
+        toJSON: { transform: function (doc, ret) { delete ret.__v; } },
+        toObject: { transform: function (doc, ret) { delete ret.__v; } },
     }
 )
+
+// refreshTokenSchema.path('__v', {
+//     type: Number,
+//     select: false
+// });
 
 export const RefreshTokenModel = model<RefreshToken>("RefreshToken", refreshTokenSchema)
