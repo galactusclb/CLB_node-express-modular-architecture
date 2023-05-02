@@ -5,6 +5,7 @@ import { User } from "../types/user.type";
 const UserSchema = new mongoose.Schema({
     userName: { type: String, required: true, unique: true },
     password: { type: String, required: true, select: false },
+    role: { type: String },
     isActive: { type: Boolean, required: false }
 }, {
     timestamps: true,

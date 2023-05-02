@@ -5,6 +5,7 @@ import { RefreshTokenModel } from "./models"
 import { excludeProperties, generateHashPassword, verifyHashPassword, withTransaction } from "./auth.utils"
 import { User } from "./types/user.type"
 import { RefreshToken } from "./types/refresh-token.type"
+import { constants } from "@utils/constants"
 
 
 
@@ -21,7 +22,11 @@ export const doSignup = withTransaction(async (userName: string, password: strin
 
     const hashedPassword = await generateHashPassword(password);
 
-    const userDoc = new UserModel({ userName, password: hashedPassword })
+    const userDoc = new UserModel({
+        userName,
+        password: hashedPassword,
+        role: constants?.AUTH_ROLES?.USER
+    })
 
     const refreshTokenDoc = new RefreshTokenModel({
         owner: userDoc.id

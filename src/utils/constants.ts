@@ -6,4 +6,11 @@ export const constants = {
     JWT_SIGN_OPTIONS: {
 
     },
+
+    AUTH_ROLES: {
+        SUPER_ADMIN: "super-admin",
+        ADMIN: "admin",
+        MODERATOR: "moderator",
+        USER: "user",
+    },
 };

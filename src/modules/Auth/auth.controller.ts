@@ -12,8 +12,17 @@ export const signUp: Controller = async (httpRequest) => {
         throw new InternalServerError()
     }
 
-    const accessToken = createAccessToken(signupResult.userDoc._id)
-    const refreshToken = createRefreshToken(signupResult.userDoc._id, signupResult.refreshTokenDoc?._id)
+    const accessToken = createAccessToken({
+        tokenId: signupResult.refreshTokenDoc?._id,
+        userId: signupResult.userDoc._id,
+        role: signupResult.userDoc.role,
+    })
+
+    const refreshToken = createRefreshToken({
+        tokenId: signupResult.refreshTokenDoc?._id,
+        userId: signupResult.userDoc._id,
+        role: signupResult.userDoc.role,
+    })
 
     return {
         statusCode: 201,
@@ -35,8 +44,18 @@ export const login: Controller = async (httpRequest) => {
         throw new InternalServerError()
     }
 
-    const accessToken = createAccessToken(loginData.userDoc._id)
-    const refreshToken = createRefreshToken(loginData.userDoc._id, loginData.refreshTokenDoc?._id)
+    const accessToken = createAccessToken({
+        tokenId: loginData.refreshTokenDoc?._id,
+        userId: loginData.userDoc._id,
+        role: loginData.userDoc.role,
+    })
+    // const refreshToken = createRefreshToken(loginData.userDoc._id, loginData.refreshTokenDoc?._id)
+
+    const refreshToken = createRefreshToken({
+        tokenId: loginData.refreshTokenDoc?._id,
+        userId: loginData.userDoc._id,
+        role: loginData.userDoc.role,
+    })
 
     return {
         statusCode: 201,
@@ -106,7 +125,14 @@ export const newRefreshToken: Controller = async (httpRequest) => {
         throw new InternalServerError()
     }
 
-    const newRefreshToken = createRefreshToken(decodedRefreshToken.userId, refreshTokenDoc?._id)
+    // const newRefreshToken = createRefreshToken(decodedRefreshToken.userId, refreshTokenDoc?._id)
+
+    const newRefreshToken = createRefreshToken({
+        tokenId: refreshTokenDoc?._id,
+        userId: decodedRefreshToken.userDoc._id,
+        role: decodedRefreshToken.userDoc.role,
+    })
+
     const newAccessToken = createAccessToken(decodedRefreshToken.userId)
 
     return {

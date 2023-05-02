@@ -8,7 +8,7 @@ export const getAllProducts: Controller = async (httpRequest, httpResponse) => {
     // console.log(httpResponse?.locals?.authUserDetails?.userId);
     // console.log(httpRequest?.authUserDetails);
 
-    console.log(getAuthIdFromHeader(httpResponse));
+    // console.log(getAuthIdFromHeader(httpResponse));
 
     const results = await fetchAllProducts()
 

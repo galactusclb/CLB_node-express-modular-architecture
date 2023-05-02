@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import jwt, { TokenExpiredError } from "jsonwebtoken";
 import * as bcrypt from 'bcrypt';
 
+import { AuthToken } from 'types/auth-toke.model';
 import { constants } from "utils/constants";
 import { User } from "./types/user.type";
 import { InternalServerError, UnauthorizedError } from "utils/api-errors";
@@ -30,12 +31,16 @@ export const withTransaction = <T>(fn: (...args: any[]) => Promise<T>): ((...arg
 }
 
 
-export const createAccessToken = (userId: mongoose.Types.ObjectId) => {
+export const createAccessToken = (payload: AuthToken) => {
+
+    const jwtPayload: AuthToken = {
+        userId: payload?.userId,
+        tokenId: payload?.tokenId,
+        role: payload.role
+    }
 
     return jwt.sign(
-        {
-            userId: userId
-        },
+        jwtPayload,
         constants.JWT_ACCESS_TOKEN_SECRET!,
         {
             expiresIn: constants.ACCESS_TOKEN_EXPIRES_IN || '10m'
@@ -43,13 +48,16 @@ export const createAccessToken = (userId: mongoose.Types.ObjectId) => {
     )
 }
 
-export const createRefreshToken = (userId: mongoose.Types.ObjectId, refreshTokenId: mongoose.Types.ObjectId) => {
+export const createRefreshToken = (payload: AuthToken) => {
+
+    const jwtPayload: AuthToken = {
+        userId: payload?.userId,
+        tokenId: payload?.tokenId,
+        role: payload.role
+    }
 
     return jwt.sign(
-        {
-            userId: userId,
-            tokenId: refreshTokenId
-        },
+        jwtPayload,
         constants.JWT_REFRESH_TOKEN_SECRET!,
         {
             expiresIn: constants.REFRESH_TOKEN_EXPIRES_IN || "30d"
