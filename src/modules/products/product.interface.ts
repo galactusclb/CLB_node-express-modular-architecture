@@ -1,5 +1,12 @@
+import mongoose from "mongoose";
+
 export interface Product {
-    name: string;
-    price: number;
-    description: string;
+    _id?: mongoose.Types.ObjectId;
+    name?: string;
+    price?: number;
+    description?: string;
+    category?: string;
+    sku?: number;
+    createdAt?: Date;
+    updatedAt?: Date;
 }

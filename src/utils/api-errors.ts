@@ -48,7 +48,7 @@ class MethodNotAllowedError extends APIError {
 
 class ConflictError extends APIError {
     constructor(message = 'Conflict') {
-        super(408, message);
+        super(409, message);
     }
 }
 

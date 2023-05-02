@@ -1,4 +1,4 @@
-import { fetchAllProducts, fetchProductById } from "./product.service"
+import { doCreateProduct, fetchAllProducts, fetchProductById } from "./product.service"
 import { Controller } from "middlewares/make-express-callback.middleware";
 import { getAuthIdFromHeader } from "@utils/auth-helpers";
 
@@ -31,3 +31,18 @@ export const getProductById: Controller = async (httpRequest) => {
         }
     };
 }
+
+export const createProduct: Controller = async (httpRequest) => {
+
+    const { name, price, category, sku, description } = httpRequest.body
+
+    const results = await doCreateProduct({ name, price, category, sku, description })
+
+    return {
+        statusCode: 200,
+        body: {
+            data: results
+        }
+    };
+}
+
