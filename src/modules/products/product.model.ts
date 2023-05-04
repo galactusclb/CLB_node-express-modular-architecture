@@ -10,8 +10,18 @@ const ProductSchema = new mongoose.Schema({
     sku: { type: Number, default: 0 },
 }, {
     timestamps: true,
-    toJSON: { transform: function (doc, ret) { delete ret.__v; } },
-    toObject: { transform: function (doc, ret) { delete ret.__v; } },
+    toJSON: {
+        transform: function (doc, ret) {
+            delete ret?._doc?.__v;
+            return ret?._doc;
+        }
+    },
+    toObject: {
+        transform: function (doc, ret) {
+            delete ret?._doc?.__v;
+            return ret?._doc;
+        }
+    },
 });
 
 // ProductSchema.path('__v', {

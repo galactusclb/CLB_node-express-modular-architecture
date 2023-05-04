@@ -1,7 +1,8 @@
-import { doCreateProduct, doDeleteProduct, doUpdateProduct, fetchAllProducts, fetchProductById } from "./product.service"
 import { Controller } from "middlewares/make-express-callback.middleware";
 import { getAuthIdFromHeader } from "@utils/auth-helpers";
 import { ApiResponseMessage } from "@utils/api-response-message-generator";
+import { doCreateProduct, doDeleteProduct, doFetchAllProducts, doFetchProductById, doUpdateProduct } from "./product.service"
+import { transformProductData } from "./product.dto";
 
 export const getAllProducts: Controller = async (httpRequest, httpResponse) => {
     // console.log(httpResponse?.locals?.authUserDetails?.userId);
@@ -9,13 +10,13 @@ export const getAllProducts: Controller = async (httpRequest, httpResponse) => {
 
     // console.log(getAuthIdFromHeader(httpResponse));
 
-    const results = await fetchAllProducts()
+    const results = await doFetchAllProducts()
 
     return {
         statusCode: 200,
         body: {
             success: true,
-            data: results
+            data: transformProductData(results.map((item) => item.toObject()))
         }
     };
 }
@@ -24,13 +25,14 @@ export const getProductById: Controller = async (httpRequest) => {
 
     const { id } = httpRequest.params
 
-    const results = await fetchProductById(id)
+    const results = await doFetchProductById(id)
 
     return {
         statusCode: 200,
         body: {
             success: true,
-            data: results
+            // data: results
+            data: transformProductData(results?.toObject())
         }
     };
 }

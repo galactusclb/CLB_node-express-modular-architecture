@@ -1,6 +1,7 @@
 import { ConflictError, NotFoundError } from "utils/api-errors";
 import { ProductModel } from "./product.model";
 import { Product } from "./product.interface";
+import { Document } from "mongoose";
 
 
 export const doCreateProduct = async (payload: Product): Promise<Product> => {
@@ -15,15 +16,12 @@ export const doCreateProduct = async (payload: Product): Promise<Product> => {
     return productDoc
 }
 
-export const fetchAllProducts = async () => {
+export const doFetchAllProducts = async (): Promise<Document[]> => {
     const results = await ProductModel.find()
     return results;
 }
 
-export const fetchProductById = async (productId: string) => {
-    // if (!mongoose.Types.ObjectId.isValid(productId)) {
-    //     throw new Error('Invalid product ID');
-    // }
+export const doFetchProductById = async (productId: string): Promise<Document> => {
 
     const hasProduct = await ProductModel.findById(productId)
 
