@@ -5,8 +5,9 @@ import { InternalServerError, UnauthorizedError } from "utils/api-errors";
 import { createAccessToken, createRefreshToken, validateRefreshToken } from "./auth.utils";
 
 export const signUp: Controller = async (httpRequest) => {
-    const { userName, password } = httpRequest.body
-    const signupResult = await doSignup(userName, password)
+    const { email, userName, password } = httpRequest.body
+
+    const signupResult = await doSignup(email, userName, password)
 
     if (!signupResult || !signupResult.userDoc._id || !signupResult.refreshTokenDoc?._id) {
         throw new InternalServerError()
@@ -38,7 +39,6 @@ export const signUp: Controller = async (httpRequest) => {
 }
 
 export const login: Controller = async (httpRequest) => {
-
     const { userName, password } = httpRequest.body
 
     const loginData = await doLogin(userName, password)

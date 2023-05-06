@@ -12,12 +12,17 @@ import { RefreshToken } from "./types/refresh-token.type"
 
 
 
-export const doSignup = withTransaction(async (userName: string, password: string, session): Promise<{
+export const doSignup = withTransaction(async (email: string, userName: string, password: string, session): Promise<{
     userDoc: User,
     refreshTokenDoc: RefreshToken
 } | undefined> => {
 
-    const hasUser = await UserModel.findOne({ userName })
+    const hasUser = await UserModel.findOne({
+        $or: [
+            { userName },
+            { email }
+        ]
+    })
 
     if (hasUser) {
         throw new ForbiddenError("Can't create a user with that credential.")
@@ -25,7 +30,8 @@ export const doSignup = withTransaction(async (userName: string, password: strin
 
     const hashedPassword = await generateHashPassword(password);
 
-    const userDoc = new UserModel({
+    let userDoc = new UserModel({
+        email,
         userName,
         password: hashedPassword,
         role: constants?.AUTH_ROLES?.USER
@@ -37,6 +43,8 @@ export const doSignup = withTransaction(async (userName: string, password: strin
 
     await userDoc.save({ session })
     await refreshTokenDoc.save({ session })
+
+    userDoc = excludeProperties(userDoc, ["password", "createdAt", "updatedAt"])
 
     return {
         userDoc,

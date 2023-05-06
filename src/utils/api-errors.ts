@@ -2,17 +2,19 @@
 class APIError extends Error {
     status: number;
     message: string;
+    data: any
 
-    constructor(status: number, message: string) {
+    constructor(status: number, message: string, data: any = undefined) {
         super();
         this.status = status;
         this.message = message;
+        this.data = data;
     }
 }
 
 class BadRequestError extends APIError {
-    constructor(message = 'Bad Request') {
-        super(400, message);
+    constructor(message = 'Bad Request', data: any = undefined) {
+        super(400, message, data);
     }
 }
 
