@@ -15,10 +15,14 @@ export type HttpRequest = {
     };
 }
 
-export type Controller = (httpRequest: HttpRequest) => Promise<{
+export type Controller = (httpRequest: HttpRequest, httpResponse: any) => Promise<{
     headers?: { [key: string]: string };
     statusCode: number;
-    body: any;
+    body: {
+        success: boolean,
+        message?: string,
+        data?: any
+    };
 }>;
 
 const makeExpressCallback = (controller: Controller) => async (
@@ -39,7 +43,7 @@ const makeExpressCallback = (controller: Controller) => async (
             'User-Agent': req.get('User-Agent')
         }
     };
-    const httpResponse = await controller(httpRequest);
+    const httpResponse = await controller(httpRequest, res);
     if (httpResponse.headers) res.set(httpResponse.headers);
     return res.status(httpResponse.statusCode).send(httpResponse.body);
 };

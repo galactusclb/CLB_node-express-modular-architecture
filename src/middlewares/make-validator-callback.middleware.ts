@@ -1,24 +1,17 @@
 import { NextFunction, Request, Response } from "express";
+import { validationResult } from "express-validator";
 import { BadRequestError } from "utils/api-errors";
 
-type Validator = (httpRequest: {
-    body: any;
-    query: any;
-    params: any;
-}) => { error?: Error; value: any };
+const makeValidatorCallback = (validator: any[]) => [
+    ...validator,
+    (req: Request, res: Response, next: NextFunction) => {
+        const errors = validationResult(req);
 
-const makeValidatorCallback = (validator: Validator) => (req: Request, res: Response, next: NextFunction) => {
-    const httpRequest = {
-        body: req.body,
-        query: req.query,
-        params: req.params
-    };
-    const { error, value } = validator(httpRequest);
-    if (error) {
-        throw new BadRequestError(error.message);
+        if (!errors.isEmpty()) {
+            throw new BadRequestError(undefined, errors.array());
+        }
+        return next();
     }
-    req.body = value;
-    return next();
-};
+];
 
 export default makeValidatorCallback;

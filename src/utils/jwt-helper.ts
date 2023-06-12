@@ -1,7 +1,7 @@
-import jwt, { SignOptions } from 'jsonwebtoken';
+import jwt, { SignOptions, TokenExpiredError } from 'jsonwebtoken';
 
 import { constants } from "utils/constants";
-import { BadRequestError } from 'utils/api-errors';
+import { BadRequestError, UnauthorizedError } from 'utils/api-errors';
 
 const signOption: SignOptions = {}
 
@@ -33,7 +33,7 @@ const generateJWT = async ({
 const verifyJWT = async ({
     token,
     secretKey = constants.JWT_ACCESS_TOKEN_SECRET!,
-    // signOption = constants.JWT_SIGN_OPTIONS!
+    signOption = constants.JWT_SIGN_OPTIONS
 }: {
     token: string;
     secretKey?: string;
@@ -43,11 +43,15 @@ const verifyJWT = async ({
         const data = jwt.verify(
             token,
             secretKey,
-            // signOption
+            signOption
         );
         return data;
     } catch (error) {
-        if (error instanceof Error) {
+        console.log(error);
+
+        if (error instanceof TokenExpiredError) {
+            throw new UnauthorizedError()
+        } else if (error instanceof Error) {
             throw new BadRequestError(error.message);
         } else {
             throw new BadRequestError('An unknown error occurred');

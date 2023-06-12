@@ -21,7 +21,8 @@ const errorHandler = async (error: APIError, req: Request, res: Response, next: 
         return res.status(error.status).send({
             error: {
                 code: error.status,
-                message: error.message
+                message: error.message,
+                data: error?.data
             }
         });
     }
