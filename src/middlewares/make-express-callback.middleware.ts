@@ -4,7 +4,7 @@ export type HttpRequest = {
     body: any;
     query: any;
     params: any;
-    ip: string;
+    ip?: string;
     method: string;
     path: string;
     headers: {
